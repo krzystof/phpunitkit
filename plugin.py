@@ -318,7 +318,7 @@ class PHPUnitTextUITestRunner():
         self.window.run_command('exec', {
             'cmd': cmd,
             'file_regex': '([a-zA-Z0-9\\.\\/_-]+)(?: on line |\:)([0-9]+)$',
-            'quiet': not bool(os.getenv('SUBLIME_PHPUNIT_DEBUG')),
+            'quiet': not bool(DEBUG),
             'shell': True,
             'syntax': 'Packages/phpunitkit/test-results.hidden-tmLanguage',
             'word_wrap': False,
