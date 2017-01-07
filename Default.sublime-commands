@@ -8,8 +8,12 @@
         "command": "phpunit_run_last_test"
     },
     {
-        "caption": "PHPUnit: Run Single Test",
-        "command": "phpunit_run_single_test"
+        "caption": "PHPUnit: Run Single File",
+        "command": "phpunit_run_single_file"
+    },
+    {
+        "caption": "PHPUnit: Run Single Method",
+        "command": "phpunit_run_single_method"
     },
     {
         "caption": "PHPUnit: Show Test Results",

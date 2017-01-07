@@ -1,10 +1,8 @@
-# WHAT PHPUNITKIT IS
+# Fork and Tweaks of PHPUNITKIT
 
-[![Author](https://img.shields.io/badge/author-@gerardroche-blue.svg?style=flat-square&maxAge=86400)](https://twitter.com/gerardroche) [![Source Code](https://img.shields.io/badge/source-GitHub-blue.svg?style=flat-square&maxAge=86400)](https://github.com/gerardroche/sublime-phpunit) [![License](https://img.shields.io/badge/license-BSD--3-blue.svg?style=flat-square&maxAge=86400)](LICENSE) [![GitHub stars](https://img.shields.io/github/stars/gerardroche/sublime-phpunit.svg?style=flat-square&maxAge=86400)](https://github.com/gerardroche/sublime-phpunit/stargazers) [![Sublime version](https://img.shields.io/badge/sublime-v3.0.0-green.svg?style=flat-square&maxAge=86400)](https://sublimetext.com) [![Latest version](https://img.shields.io/github/tag/gerardroche/sublime-phpunit.svg?style=flat-square&maxAge=86400&label=release)](https://github.com/gerardroche/sublime-phpunit/tags) [![Downloads](https://img.shields.io/packagecontrol/dt/phpunitkit.svg?style=flat-square&maxAge=86400)](https://packagecontrol.io/packages/phpunitkit)
+For more informations, see [gerardroche's PHPUNITKIT](https://github.com/gerardroche/sublime-phpunit)
 
 PHPUNITKIT is a plugin that provides [PHPUnit](https://phpunit.de) support in [Sublime Text](https://sublimetext.com). It provides an abstraction over running tests from the command-line. It works best alongside other PHP development plugins such as [PHP Grammar], [PHP Snippets], and [PHP Completions].
-
-![Screenshot](screenshot.png)
 
 ## OVERVIEW
 
@@ -70,14 +68,12 @@ OS X | Windows / Linux | Description
 
 ### Vintage / Vintageous
 
-Disabled by default.
-
 OS X / Windows / Linux | Description
 -----------------------|------------
-<kbd>,</kbd><kbd>r</kbd> | Run single test case or test(s)
-<kbd>,</kbd><kbd>t</kbd> | Run test suite
-<kbd>,</kbd><kbd>e</kbd> | Rerun last test(s)
-<kbd>,</kbd><kbd>.</kbd> | Switch, split, and focus test case &amp; class under test
+<kbd>,</kbd><kbd>t</kbd><kbd>a</kbd> | Run test suite
+<kbd>,</kbd><kbd>t</kbd><kbd>s</kbd> | Run single test case or test(s)
+<kbd>,</kbd><kbd>t</kbd><kbd>l</kbd> | Rerun last test(s)
+<kbd>,</kbd><kbd>t</kbd><kbd>s</kbd> | Switch, split, and focus test case &amp; class under test
 
 ## CONFIGURATION
 
@@ -179,7 +175,7 @@ Key | Description | Type | Default
 ----|-------------|------|--------
 `phpunit.options` | Command-line options to pass to PHPUnit. See [`phpunit --help`](https://phpunit.de/manual/current/en/textui.html#textui.clioptions) for an up-to-date list of command-line options. | `dict` | `{}`
 `phpunit.keymaps` | Enable the default keymaps. | `boolean` | `true`
-`phpunit.keymaps.vi` | Enable the default vi keymaps (requires `phpunit.keymaps` to be enabled). | `boolean` | `false`
+`phpunit.keymaps.vi` | Enable the default vi keymaps (requires `phpunit.keymaps` to be enabled). | `boolean` | `true`
 `phpunit.composer` | Enable [Composer] support. If a Composer installed PHPUnit is found then it is used to run tests. | `boolean` | `true`
 `phpunit.save_all_on_run` | Enable writing out every buffer (active window) with changes and a file name, on test runs. | `boolean` | `true`
 
@@ -209,23 +205,6 @@ Key | Description | Type | Default
 
 Works best alongside [PHP Grammar], [PHP Completions], and [PHP Snippets].
 
-### Package Control
-
-The preferred method of installation is [Package Control].
-
-### Manual
-
-1. Close Sublime Text.
-2. Download or clone this repository to a directory named **`phpunitkit`** in the Sublime Text Packages directory for your platform:
-    * Linux: `git clone https://github.com/gerardroche/sublime-phpunit.git ~/.config/sublime-text-3/Packages/phpunitkit`
-    * OS X: `git clone https://github.com/gerardroche/sublime-phpunit.git ~/Library/Application\ Support/Sublime\ Text\ 3/Packages/phpunitkit`
-    * Windows: `git clone https://github.com/gerardroche/sublime-phpunit.git %APPDATA%\Sublime/ Text/ 3/Packages/phpunitkit`
-3. Done!
-
-## CONTRIBUTING
-
-Your issue reports and pull requests are welcome.
-
 ### Debug messages
 
 Debug messages are disabled by default. To enable them set an environment variable to a non-blank value e.g. `SUBLIME_PHPUNIT_DEBUG=y`. To disable them set unset it or set it to a blank value e.g. `SUBLIME_PHPUNIT_DEBUG=`.
@@ -247,22 +226,6 @@ export SUBLIME_PHPUNIT_DEBUG=y
 ```
 
 Alternatively, create a [debug script (subld)](https://github.com/gerardroche/dotfiles/blob/1a27abed589f2fea9126a0496ef4d1cae0479722/src/bin/subld) with debugging environment variables enabled.
-
-#### Example &mdash; Windows
-
-Sublime Text can be started at the Command Prompt with an exported environment variable.
-
-```
-> set SUBLIME_PHPUNIT_DEBUG=y& "C:\Program Files\Sublime Text 3\subl.exe"
-```
-
-To set the environment permanently set it as a *system* environment variable (requires restart).
-
-1. Control Panel > System and Security > System > Advanced system settings
-2. Advanced > Environment Variables
-3. System variables > New...
-4. Add Variable name `SUBLIME_PHPUNIT_DEBUG` with Variable value `y`
-5. Restart Windows
 
 ### Running tests
 

@@ -4,15 +4,12 @@ import os
 import sublime
 import sublime_plugin
 
-if bool(os.getenv('SUBLIME_PHPUNIT_DEBUG')):
-    def debug_message(message):
-        """
-        Prints a debug level message.
-        """
-        print('DEBUG phpunitkit: %s' % str(message))
-else:
-    def debug_message(message):
+DEBUG = False
+def debug_message(message):
+    if not DEBUG:
         pass
+    print('DEBUG phpunitkit: %s' % str(message))
+
 
 class PluginSettings():
 
@@ -68,12 +65,10 @@ class PHPUnitConfigurationFileFinder():
     directory or the nearest common ancestor directory
     in {folders}.
     """
-
     def find(self, file_name, folders):
         """
         Finds the PHPUnit configuration file.
         """
-
         debug_message('Find PHPUnit configuration file for %s in %s (%d)' % (file_name, folders, len(folders)))
 
         if file_name == None:
@@ -216,11 +211,19 @@ class ViewHelpers():
 
         return normalise_path(first_switchable[0])
 
-class PHPUnitTextUITestRunner():
+    def get_current_function(self):
+        sel = self.view.sel()[0]
+        function_regions = self.view.find_by_selector('entity.name.function')
+        cf = None
+        for r in reversed(function_regions):
+            if r.a < sel.a:
+                cf = self.view.substr(r)
+                break
+        return cf
 
-    """
-    PHPUnit test runner
-    """
+
+
+class PHPUnitTextUITestRunner():
 
     def __init__(self, window):
         self.window = window
@@ -342,29 +345,23 @@ class PHPUnitTextUITestRunner():
         if args:
             self.run(args)
 
-class PhpunitRunAllTests(sublime_plugin.WindowCommand):
 
-    """
-    Runs all tests
-    """
+
+class PhpunitRunAllTests(sublime_plugin.WindowCommand):
 
     def run(self):
         PHPUnitTextUITestRunner(self.window).run()
 
-class PhpunitRunLastTestCommand(sublime_plugin.WindowCommand):
 
-    """
-    Run last test
-    """
+
+class PhpunitRunLastTestCommand(sublime_plugin.WindowCommand):
 
     def run(self):
         PHPUnitTextUITestRunner(self.window).run_last_test()
 
-class PhpunitRunSingleTestCommand(sublime_plugin.WindowCommand):
 
-    """
-    Run single test
-    """
+
+class PhpunitRunSingleFileCommand(sublime_plugin.WindowCommand):
 
     def run(self):
         view = self.window.active_view()
@@ -379,13 +376,6 @@ class PhpunitRunSingleTestCommand(sublime_plugin.WindowCommand):
             unit_test = view.file_name()
             options = {}
 
-            unit_test_method_names = self.selected_unit_test_method_names(view)
-            debug_message('Test method selections: %s' % unit_test_method_names)
-            if unit_test_method_names:
-                options = {
-                    # @todo optimise filter regex; possibly limit the size of the regex too
-                    'filter': '::(' + '|'.join(unit_test_method_names) + ')( with data set .+)?$'
-                }
         else:
             debug_message('No test case found in %s' % view.file_name())
 
@@ -402,31 +392,38 @@ class PhpunitRunSingleTestCommand(sublime_plugin.WindowCommand):
             "options": options
         })
 
-    def selected_unit_test_method_names(self, view):
-        """
-        If all selections are test methods returns an array of all selected
-        test method names; otherwise None
-        """
 
-        # @todo should be a scoped selection i.e. is the selection a source.php entity.name.function
-        method_names = []
-        for region in view.sel():
-            word = view.substr(view.word(region))
-            if not is_valid_php_identifier(word) or word[:4] != 'test':
-                return None
 
-            method_names.append(word)
+class PhpunitRunSingleTestCommand(sublime_plugin.WindowCommand):
+    def run(self):
+        view = self.window.active_view()
+        if not view:
+            return
 
-        return method_names
+        view_helpers = ViewHelpers(view)
+
+        current_function = view_helpers.get_current_function()
+        if not current_function:
+            debug_message('No current function')
+            return
+
+        debug_message('Current function is %s' % current_function)
+        options = {
+            'filter': '::(' + current_function + ')( with data set .+)?$'
+        }
+
+        unit_test = view_helpers.find_first_switchable_file()
+
+        PHPUnitTextUITestRunner(self.window).run({
+            "unit_test_or_directory": unit_test,
+            "options": options
+        })
+
+
 
 class PhpunitSwitchFile(sublime_plugin.WindowCommand):
 
-    """
-    Switch file
-    """
-
     def run(self):
-
         current_view = self.window.active_view()
         if not current_view:
             return
@@ -467,22 +464,18 @@ class PhpunitSwitchFile(sublime_plugin.WindowCommand):
             self.window.focus_view(current_view)
             self.window.focus_view(switched_view)
 
-class PhpunitToggleLongOption(sublime_plugin.WindowCommand):
 
-    """
-    Toggle PHPUnit Command-Line (long) Options
-    """
+
+class PhpunitToggleLongOption(sublime_plugin.WindowCommand):
 
     def run(self, option):
         options = plugin_settings.get_transient('options', {})
         options[option] = not bool(options[option]) if option in options else True
         plugin_settings.set_transient('options', options)
 
-class PhpunitOpenHtmlCodeCoverageInBrowser(sublime_plugin.WindowCommand):
 
-    """
-    Open HTML code coverage in browser
-    """
+
+class PhpunitOpenHtmlCodeCoverageInBrowser(sublime_plugin.WindowCommand):
 
     def run(self):
         view = self.window.active_view()
