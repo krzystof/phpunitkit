@@ -1,6 +1,7 @@
 # Fork and Tweaks of PHPUNITKIT
 
 For more informations, see [gerardroche's PHPUNITKIT](https://github.com/gerardroche/sublime-phpunit)
+I also used Adam Wathan's and David Hempill's work to run a single method, as seen [here](https://github.com/adamwathan/sublime-phpunit)
 
 PHPUNITKIT is a plugin that provides [PHPUnit](https://phpunit.de) support in [Sublime Text](https://sublimetext.com). It provides an abstraction over running tests from the command-line. It works best alongside other PHP development plugins such as [PHP Grammar], [PHP Snippets], and [PHP Completions].
 
