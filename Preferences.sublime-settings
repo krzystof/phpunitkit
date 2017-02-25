@@ -1,6 +1,7 @@
 {
     // Test results color scheme. Set to null for no colour. Schemes:
-    "phpunit.color_scheme": "Packages/phpunitkit/color-schemes/boxy_yesterday.hidden-tmTheme",
+    // "phpunit.color_scheme": "Packages/phpunitkit/color-schemes/boxy_yesterday.hidden-tmTheme",
+    "phpunit.color_scheme": "Packages/phpunitkit/color-schemes/darker.hidden-tmTheme",
 
     // Enable composer support. If a composer installed PHPUnit is found then it
     // is used to run tests.

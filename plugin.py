@@ -412,10 +412,8 @@ class PhpunitRunSingleTestCommand(sublime_plugin.WindowCommand):
             'filter': '::(' + current_function + ')( with data set .+)?$'
         }
 
-        unit_test = view_helpers.find_first_switchable_file()
-
         PHPUnitTextUITestRunner(self.window).run({
-            "unit_test_or_directory": unit_test,
+            "unit_test_or_directory": "",
             "options": options
         })
 
